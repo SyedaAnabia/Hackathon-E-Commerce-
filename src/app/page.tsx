@@ -1,145 +1,146 @@
+"use client";
+
 import Link from "next/link";
 import Image from "next/image";
-import Homeproducts from "../app/query/Homeproducts/page";
 import dynamic from "next/dynamic";
 
-const page = () => {
+const LazyProducts = dynamic(() => import("../app/query/Homeproducts/page"), {
+  ssr: false,
+});
 
-  const LazyComponent = dynamic(() => import('../app/query/Homeproducts/page'), {
-    ssr: false,
-  });
-
+const Page = () => {
   return (
     <>
-      <div className="relative bg-gray-50">
-        {/* Hero Image */}
+      {/* 🌸 Hero Section */}
+      <section className="relative bg-[#F8F5F0]">
+        <Image
+          src="/images/la-hero.jpg"
+          alt="La Khalaba Boutique Hero"
+          width={1440}
+          height={600}
+          className="w-full h-auto object-cover mt-20"
+          priority
+          fetchPriority="high"
+        />
+        <div className="absolute top-1/2 left-6 md:left-20 transform -translate-y-1/2 bg-white/70 p-6 md:p-12 rounded-lg shadow-lg backdrop-blur-md">
+          <h2 className="text-[#6B4E23] uppercase text-sm font-semibold tracking-widest">
+            La Khalaba Exclusive
+          </h2>
+          <h1 className="text-[#1E1E1E] text-2xl md:text-4xl font-bold mt-3 leading-snug">
+            Elevate Your Elegance with Our <br />
+            <span className="text-[#C2A356]">New Abaya Collection</span>
+          </h1>
+          <p className="text-[#555] mt-4 text-sm md:text-base">
+            Discover timeless styles crafted with luxury fabrics and modern
+            cuts. Designed for confident women.
+          </p>
+          <Link href={"/shop"}>
+            <button className="mt-6 bg-[#C2A356] text-white text-sm md:text-base px-6 py-3 hover:bg-[#A98F45] transition">
+              Shop Now
+            </button>
+          </Link>
+        </div>
+      </section>
 
-        <div className="w-full">
+      {/* 🖤 Categories Section */}
+      <section className="py-16 bg-white text-center">
+        <h1 className="text-3xl md:text-4xl font-bold text-[#1E1E1E]">
+          Browse Our Collections
+        </h1>
+        <p className="text-gray-600 mt-3">
+          Discover fashion designed for every occasion.
+        </p>
+
+        <div className="flex flex-wrap justify-center gap-10 mt-14">
+          {["Abayas", "Dresses", "Scarves"].map((item, i) => (
+            <div key={i} className="flex flex-col items-center">
+              <Image
+                src={`/images/fashion${i + 1}.jpg`}
+                alt={item}
+                width={380}
+                height={480}
+                className="rounded-2xl shadow-md hover:scale-105 transition-transform duration-300"
+              />
+              <h2 className="text-xl font-semibold text-[#3C3C3C] mt-4">
+                {item}
+              </h2>
+            </div>
+          ))}
+        </div>
+      </section>
+
+      {/* ✨ New Collection Section */}
+      <section className="bg-[#FDFBF8] py-20">
+        <h1 className="text-[#1E1E1E] text-3xl md:text-4xl font-bold text-center mb-10">
+          New Collection
+        </h1>
+
+        {/* Lazy-loaded products */}
+        <LazyProducts />
+
+        <div className="flex justify-center mt-8">
+          <Link href={"/shop"}>
+            <button className="border border-[#C2A356] text-[#C2A356] px-8 py-3 text-base hover:bg-[#C2A356] hover:text-white transition">
+              View All
+            </button>
+          </Link>
+        </div>
+      </section>
+
+      {/* 🌿 Inspiration Section */}
+      <section className="bg-[#F8F5F0] py-16 flex flex-col lg:flex-row items-center justify-center gap-10">
+        <div className="text-center lg:text-left max-w-md">
+          <h1 className="text-3xl md:text-4xl font-bold text-[#1E1E1E]">
+            Inspired by Modesty, Designed for You
+          </h1>
+          <p className="text-[#555] mt-4">
+            Each piece reflects grace, beauty, and confidence. Explore outfits
+            crafted for every modern woman.
+          </p>
+          <Link href={"/lookbook"}>
+            <button className="mt-6 bg-[#C2A356] text-white px-8 py-3 hover:bg-[#A98F45] transition">
+              Explore Lookbook
+            </button>
+          </Link>
+        </div>
+
+        <div className="flex gap-6">
           <Image
-            src="/images/hero-sec.png"
-            alt="hero-section"
-            width={1440}
-            height={316}
-            sizes="(max-width: 768px) 100vw, 100vw"
-            className="w-full h-auto mt-20 "
-            priority
-             fetchPriority="high"
+            src="/images/abaya-look1.jpg"
+            alt="Look 1"
+            width={400}
+            height={500}
+            className="rounded-2xl shadow-lg hover:scale-105 transition-transform duration-300"
+          />
+          <Image
+            src="/images/abaya-look2.jpg"
+            alt="Look 2"
+            width={350}
+            height={450}
+            className="rounded-2xl shadow-lg hover:scale-105 transition-transform duration-300"
           />
         </div>
+      </section>
 
-       {/* Text Content */}
-<div className="absolute top-1/2 right-2 md:right-20 transform -translate-y-1/2 bg-[#EFE7D6] p-3 sm:p-6 md:p-14 rounded-lg shadow-lg max-w-full md:max-w-lg text-left">
-  <h2 className="font-poppins font-semibold text-[10px] sm:text-[14px] md:text-[16px] uppercase text-[#333333] tracking-wide">
-    New Arrival
-  </h2>
-  <h1 className="text-[12px] sm:text-lg md:text-3xl font-bold text-[#5A4815] mt-2 sm:mt-3 md:mt-4 mb-2 sm:mb-4">
-    Discover Our New Furniture 
-    <span className="block sm:inline"> Collection</span>  
-  </h1>
-  <p className="text-gray-600 mb-2 sm:mb-6 text-[8px] sm:text-xs md:text-base leading-relaxed sm:leading-normal">
-    <span className="text-[#4A3A12] block sm:inline">Crafted to perfection with exquisite designs and</span> 
-    <span className="text-[#4A3A12] block sm:inline"> unmatched comfort to elevate your living spaces.</span> 
-  </p>
-  <Link href={'/shop'}>
-    <button className="bg-[#8C6D23] text-white text-[10px] sm:text-sm md:text-lg px-4 py-2 sm:px-6 sm:py-3 md:px-8 md:py-4 hover:bg-[#70561C] transition shadow-lg">
-      Buy Now
-    </button>
-  </Link>
-</div>
-      </div>
-
-      {/* Browse the Range Section */}
-      <section className="py-10">
-  <h1 className="text-[#333333] text-2xl sm:text-3xl font-bold text-center mt-10">
-    Browse The Range
-  </h1>
-  <p className="text-center text-[#555555] mt-4">
-    Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-  </p>
-  <div className="flex flex-wrap items-center justify-center mt-16 gap-8">
-    {["Dining", "Living", "Bedroom"].map((category, index) => (
-      <div
-        key={index}
-        className="flex flex-col items-center max-w-[300px] sm:max-w-full"
-      >
-        <Image
-          src={`/images/img${index + 1}.png`}
-          alt={`Explore our ${category} collection`}
-          width={381}
-          height={480}
-          className="w-full h-auto hover:scale-105 transition-transform duration-300"
-          quality={75}
-          loading="lazy" // Lazy-load images
-        />
-        <h2 className="text-center text-xl sm:text-2xl font-medium mt-6 text-[#333333]">
-          {category}
+      {/* 🕊️ Social Section */}
+      <section className="py-20 bg-white text-center">
+        <h2 className="text-sm uppercase text-gray-600 tracking-widest">
+          Follow Us On Instagram
         </h2>
-      </div>
-    ))}
-  </div>
-</section>
-
-
-      {/* Our Products Section */}
-      <section>
-        <h1 className="text-[#333333] text-[40px] text-center font-bold mt-14 mb-6">
-          Our Products
+        <h1 className="text-3xl font-bold text-[#1E1E1E] mt-2">
+          #LaKhalabaStyle
         </h1>
-        <Homeproducts />
-        <div className="flex items-center justify-center mt-6">
-          <Link href={"/shop"}>
-            <button className="w-[245px] h-[48px] bg-[#FFFFFF] border border-[#946F27] text-[#946F27] hover:bg-[#946F27] hover:text-white">
-              Show More
-            </button>
-          </Link>
-        </div>
-      </section>
 
-      {/* Inspiration Section */}
-      <section className="h-auto bg-[#FCF8F3] mt-10 flex flex-col lg:flex-row items-center justify-around">
-        <div className="text-center lg:text-left px-6 lg:px-0">
-          <h1 className="text-[#333333] text-[32px] sm:text-[36px] md:text-[40px] font-bold w-[90%] md:w-[422px]">
-            50+ Beautiful rooms inspiration
-          </h1>
-          <p className="text-[14px] sm:text-[16px] mt-4 md:mt-6 w-[90%] md:w-[368px]">
-            Our designer already made a lot of beautiful prototypes of rooms
-            that inspire you.
-          </p>
-          <Link href={`/explorerrooms`}>
-            <button className="w-[70%] md:w-[176px] h-[48px] bg-[#8C6D23] text-[#FFFFFF] mt-8 transition duration-300 ease-in-out hover:bg-[#70561C] hover:scale-105">
-              Explore More
-            </button>
-          </Link>
-        </div>
-        {["img6", "img5"].map((image, index) => (
-          <div key={index} className="mt-8 lg:mt-0">
-            <Image
-              src={`/images/${image}.png`}
-              alt={image}
-              width={index === 0 ? 404 : 372}
-              height={index === 0 ? 582 : 486}
-              className="w-full"
-            />
-          </div>
-        ))}
-      </section>
-
-      {/* Social Section */}
-      <section className="h-auto mt-32 px-6 md:px-16 lg:px-32">
-        <h1 className="text-center text-[18px] sm:text-[20px]">Share your setup with</h1>
-        <h1 className="text-center text-[30px] sm:text-[40px] font-bold">
-          #FuniroFurniture
-        </h1>
-        <div className="flex flex-col lg:flex-row items-center justify-center gap-4 mt-8">
-          {["last1", "last2", "last3", "last4", "last5", "last6", "last7"].map(
-            (image, index) => (
+        <div className="flex flex-wrap justify-center gap-4 mt-10">
+          {["insta1", "insta2", "insta3", "insta4", "insta5", "insta6"].map(
+            (img, i) => (
               <Image
-                key={index}
-                src={`/images/${image}.png`}
-                alt={image}
-                width={index === 2 ? 295 : index === 6 ? 425 : 451}
-                height={index === 2 ? 392 : index === 6 ? 423 : 312}
-                className={index === 6 ? "mb-52" : "mb-5"}
+                key={i}
+                src={`/images/${img}.jpg`}
+                alt={img}
+                width={220}
+                height={250}
+                className="rounded-lg hover:scale-105 transition-transform duration-300"
               />
             )
           )}
@@ -149,4 +150,4 @@ const page = () => {
   );
 };
 
-export default page;
+export default Page;
