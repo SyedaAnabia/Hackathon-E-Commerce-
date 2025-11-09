@@ -1,72 +1,77 @@
 import { NextResponse } from "next/server";
-const stripe = require('stripe')(process.env.NEXT_STRIPE_SECRET_KEY);
+import Stripe from "stripe";
 
-export const POST = async (request: any) => {
+const stripe = new Stripe(process.env.NEXT_STRIPE_SECRET_KEY as string, {
+  apiVersion: "2024-09-30.acacia",
+});
+
+// ✅ Checkout Route for "La Khalaba Boutique"
+export const POST = async (request: Request) => {
   try {
     const { products } = await request.json();
 
-    // Debugging log: check received products
-    console.log("Received products:", products);
+    if (!products || !Array.isArray(products)) {
+      return NextResponse.json({ error: "Invalid product data" }, { status: 400 });
+    }
 
-    // Get active products from Stripe
+    console.log("👜 Received products:", products);
+
+    // Fetch existing active products from Stripe
     let activeProducts = await stripe.products.list({ active: true });
-    console.log("Active products from Stripe:", activeProducts);
+    console.log("📦 Active products in Stripe:", activeProducts.data.length);
 
-    // Step 1: Loop through products and ensure they exist in Stripe
-    for (const product of products) {
-      const matchedProduct = activeProducts.data.find((stripeProduct: any) =>
-        stripeProduct.name.toLowerCase() === product.name.toLowerCase()
+    const lineItems: { price: string; quantity: number }[] = [];
+
+    for (const item of products) {
+      const { name, price, quantity } = item;
+
+      // Check if product already exists in Stripe
+      let existingProduct = activeProducts.data.find(
+        (p) => p.name.toLowerCase() === name.toLowerCase()
       );
 
-      // If the product doesn't exist in Stripe, create it
-      if (!matchedProduct) {
+      // If product doesn't exist, create it
+      if (!existingProduct) {
         const newProduct = await stripe.products.create({
-          name: product.name,
+          name,
           default_price_data: {
-            currency: 'usd',
-            unit_amount: product.price,
+            currency: "usd",
+            unit_amount: price, // 💵 price should be in cents (e.g., $10 = 1000)
           },
         });
-
-        console.log("Created new product in Stripe:", newProduct);
+        existingProduct = newProduct;
+        console.log("✨ Created new product in Stripe:", newProduct.name);
       }
+
+      // Push the price & quantity for checkout
+      lineItems.push({
+        price: existingProduct.default_price as string,
+        quantity,
+      });
     }
 
-    // Step 2: Fetch updated product list
-    activeProducts = await stripe.products.list({ active: true });
-    let stripeProducts = [];
-
-    for (const product of products) {
-      const stripeProduct = activeProducts.data.find((stripeProduct: any) =>
-        stripeProduct.name.toLowerCase() === product.name.toLowerCase()
-      );
-
-      if (stripeProduct) {
-        stripeProducts.push({
-          price: stripeProduct.default_price,
-          quantity: product.quantity,
-        });
-      }
-    }
-
-    // Step 3: Create Stripe Checkout session
+    // ✅ Create checkout session for La Khalaba Boutique
     const session = await stripe.checkout.sessions.create({
-      line_items: stripeProducts,
-      mode: 'payment',
-      success_url: `https://website-ochre-two-55.vercel.app/success`,
-      cancel_url: `https://website-ochre-two-55.vercel.app/`,
+      line_items: lineItems,
+      mode: "payment",
+      success_url: `https://la-khalaba.vercel.app/success`,
+      cancel_url: `https://la-khalaba.vercel.app/`,
+      billing_address_collection: "required",
+      shipping_address_collection: { allowed_countries: ["US", "PK", "AE", "SA"] },
+      metadata: {
+        store: "La Khalaba Boutique",
+        website: "https://la-khalaba.vercel.app",
+      },
     });
 
-    console.log("Stripe session created:", session);
+    console.log("✅ Stripe session created:", session.id);
 
-    return NextResponse.json({
-      id: session.id,
-      url: session.url,
-    });
-  } catch (error) {
-    console.error("Error during checkout session creation:", error);
-    return NextResponse.json({
-      error: 'Something went wrong during checkout.',
-    });
+    return NextResponse.json({ id: session.id, url: session.url });
+  } catch (error: any) {
+    console.error("❌ Checkout Error:", error.message);
+    return NextResponse.json(
+      { error: "Something went wrong during checkout. Please try again." },
+      { status: 500 }
+    );
   }
 };
