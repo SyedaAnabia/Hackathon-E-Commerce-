@@ -1,6 +1,6 @@
-"use client"
-import React, { useState } from 'react';
-import Image from 'next/image';
+"use client";
+import React, { useState } from "react";
+import Image from "next/image";
 
 interface BlogPost {
   src: string;
@@ -22,91 +22,49 @@ const BlogPage: React.FC = () => {
 
   const blogPosts: BlogPost[] = [
     {
-      src: '/images/laptop.png',
-      title: 'Going all-in with millennial design',
-      date: '14 Oct 2022',
-      category: 'Wood',
-      excerpt: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit...',
+      src: "/images/blog1.jpg",
+      title: "The Art of Modest Fashion",
+      date: "10 Nov 2024",
+      category: "Style",
+      excerpt:
+        "Discover how La Khalaba redefines elegance through timeless modest pieces that celebrate confidence and grace.",
     },
     {
-      src: '/images/drawing.png',
-      title: 'Exploring new ways of decorating',
-      date: '14 Oct 2022',
-      category: 'Wood',
-      excerpt: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit...',
+      src: "/images/blog2.jpg",
+      title: "Choosing Fabrics that Breathe Luxury",
+      date: "25 Oct 2024",
+      category: "Design",
+      excerpt:
+        "A closer look at how fabric selection influences comfort, texture, and the soul of every boutique piece.",
     },
     {
-      src: '/images/book.png',
-      title: 'Handmade pieces that took time to make',
-      date: '14 Oct 2022',
-      category: 'Wood',
-      excerpt: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit...',
+      src: "/images/blog3.jpg",
+      title: "The Rise of Contemporary Abayas",
+      date: "02 Oct 2024",
+      category: "Fashion",
+      excerpt:
+        "Modern abayas are not just garments—they are statements of identity, comfort, and empowerment.",
     },
     {
-      src: '/images/office1.jpg',
-      title: 'Modern home in Milan',
-      date: '03 Aug 2022',
-      category: 'Design',
-      excerpt: 'Discover the latest trends in home design...',
+      src: "/images/blog4.jpg",
+      title: "How to Accessorize with Elegance",
+      date: "12 Sep 2024",
+      category: "Styling",
+      excerpt:
+        "Accessories complete your look. Learn how minimal touches can elevate any outfit effortlessly.",
     },
     {
-      src: '/images/office2.jpg',
-      title: 'Colorful office redesign',
-      date: '10 Sep 2022',
-      category: 'Interior',
-      excerpt: 'A vibrant take on workplace transformation...',
+      src: "/images/blog5.jpg",
+      title: "Inside La Khalaba: Behind the Designs",
+      date: "20 Aug 2024",
+      category: "Lifestyle",
+      excerpt:
+        "Step inside our creative process—where craftsmanship, passion, and artistry meet fashion.",
     },
-    {
-      src: '/images/office3.jpg',
-      title: 'Cozy Living Room Ideas',
-      date: '25 Nov 2022',
-      category: 'Interior',
-      excerpt: 'Transform your living room into a cozy retreat with these design tips...',
-    },
-    {
-      src: '/images/office4.jpg',
-      title: 'Scandinavian Minimalism in Homes',
-      date: '12 Oct 2022',
-      category: 'Design',
-      excerpt: 'Explore the simplicity and beauty of Scandinavian interior design...',
-    },
-    {
-      src: '/images/office5.jpg',
-      title: 'Modern Kitchen Trends',
-      date: '05 Jan 2023',
-      category: 'Crafts',
-      excerpt: 'Bring modernity to your kitchen with these trending ideas...',
-    },
-    {
-      src: '/images/office6.jpg',
-      title: 'Outdoor Patio Decor',
-      date: '18 Aug 2022',
-      category: 'Handmade',
-      excerpt: 'Get inspired with creative ways to decorate your patio...',
-    },
-    {
-      src: '/images/office8.jpg',
-      title: 'Gallery Wall Styling Tips',
-      date: '30 Sep 2022',
-      category: 'Design',
-      excerpt: 'Learn how to curate and style a gallery wall for your space...',
-    },
-    {
-      src: '/images/office9.jpg',
-      title: 'Creating a Serene Bedroom',
-      date: '14 Feb 2023',
-      category: 'Interior',
-      excerpt: 'Design a peaceful bedroom that promotes relaxation and sleep...',
-    },
-    
-
   ];
 
   const totalPages = Math.ceil(blogPosts.length / postsPerPage);
-
-  const handlePagination = (page: number) => {
-    setCurrentPage(page);
-  };
+  const handlePagination = (page: number) => setCurrentPage(page);
 
   const displayedPosts = blogPosts.slice(
     (currentPage - 1) * postsPerPage,
@@ -115,94 +73,122 @@ const BlogPage: React.FC = () => {
 
   return (
     <>
-      {/* Banner Section */}
-      <div>
+      {/* ✨ Banner Section */}
+      <div className="relative w-full mt-20">
         <Image
-          src="/images/blog.png"
-          alt="blog"
+          src="/images/boutique-banner.jpg"
+          alt="La Khalaba Blog Banner"
           width={1440}
-          height={316}
-          className="w-full h-auto mt-20"
+          height={400}
+          className="w-full h-[320px] object-cover"
         />
+        <div className="absolute inset-0 bg-black/40 flex flex-col justify-center items-center text-white text-center">
+          <h1 className="text-4xl lg:text-5xl font-serif tracking-widest">
+            La Khalaba Journal
+          </h1>
+          <p className="text-lg mt-2 opacity-90">
+            Stories of style, inspiration, and elegance.
+          </p>
+        </div>
       </div>
 
-      {/* Main Content */}
-      <div className="flex flex-col lg:flex-row lg:justify-between items-start px-4 lg:px-0">
-        {/* Left Section */}
-        <div className="lg:w-1/2 lg:ml-12">
-          {displayedPosts.map((post, index) => (
-            <div key={index}>
-              <Image
-                src={post.src}
-                alt={post.title}
-                width={817}
-                height={500}
-                className="mt-8 lg:mt-28 w-full hover:scale-105"
-              />
-              <div className="flex items-center gap-2 lg:gap-4 mt-2">
-                <Image src="/images/user.svg" alt="user-img" width={20} height={20} />
-                <h3 className="text-[#333333] text-sm lg:text-base">Admin</h3>
-                <Image src="/images/briefcase.svg" alt="briefcase-img" width={20} height={20} />
-                <h3 className="text-[#333333] text-sm lg:text-base">{post.date}</h3>
-                <Image src="/images/wood.svg" alt="wood-img" width={20} height={20} />
-                <h3 className="text-[#333333] text-sm lg:text-base">{post.category}</h3>
+      {/* 🖋 Main Content */}
+      <div className="flex flex-col lg:flex-row justify-between px-6 lg:px-20 py-12 gap-12">
+        {/* Left - Blog Posts */}
+        <div className="lg:w-2/3">
+          {displayedPosts.map((post, i) => (
+            <div key={i} className="mb-16 group">
+              <div className="overflow-hidden rounded-2xl shadow-lg">
+                <Image
+                  src={post.src}
+                  alt={post.title}
+                  width={800}
+                  height={450}
+                  className="w-full h-[400px] object-cover transition-transform duration-500 group-hover:scale-105"
+                />
               </div>
-              <h1 className="text-[20px] lg:text-[30px] font-semibold my-4">{post.title}</h1>
-              <p className="text-[#333333] mb-8 text-sm lg:text-base">{post.excerpt}</p>
-              <span className="border-b border-black text-sm cursor-pointer">Read More</span>
+              <div className="mt-6 space-y-2">
+                <div className="flex items-center gap-3 text-gray-600 text-sm">
+                  <span>{post.date}</span>
+                  <span className="w-1 h-1 bg-gray-400 rounded-full"></span>
+                  <span>{post.category}</span>
+                </div>
+                <h2 className="text-2xl font-semibold font-serif text-gray-900 group-hover:text-[#B88E2F] transition-colors">
+                  {post.title}
+                </h2>
+                <p className="text-gray-600 text-sm leading-relaxed">
+                  {post.excerpt}
+                </p>
+                <button className="mt-3 text-[#B88E2F] font-medium text-sm border-b border-[#B88E2F] hover:text-black hover:border-black transition">
+                  Read More →
+                </button>
+              </div>
             </div>
           ))}
         </div>
 
-        {/* Right Section */}
-        <div className="lg:w-1/2 lg:mr-20 lg:ml-20 mt-10 lg:mt-28">
-          {/* Search Bar */}
-          <div className="flex items-center justify-end w-full lg:w-[311px] h-[58px] border px-4 botext-[#333333] rounded-md">
+        {/* Right - Sidebar */}
+        <div className="lg:w-1/3 space-y-10">
+          {/* Search */}
+          <div className="relative">
             <input
               type="text"
-              placeholder="Search..."
-              className="flex-grow outline-none bg-transparent text-gray-700 placeholder-gray-400"
+              placeholder="Search articles..."
+              className="w-full border border-gray-200 rounded-full px-5 py-3 text-sm outline-none focus:ring-1 focus:ring-[#B88E2F]"
             />
-            <button className="text-gray-500 hover:text-black">
-              <Image src="/images/research.svg" alt="search-img" width={20} height={20} />
-            </button>
+            <Image
+              src="/images/search.svg"
+              alt="Search"
+              width={20}
+              height={20}
+              className="absolute right-5 top-3.5 opacity-60"
+            />
           </div>
 
           {/* Categories */}
-          <h1 className="text-[20px] lg:text-[24px] font-semibold mt-10">Categories</h1>
-          <div className="space-y-4 lg:space-y-6">
-            {[
-              { name: 'Crafts', count: 2 },
-              { name: 'Design', count: 8 },
-              { name: 'Handmade', count: 7 },
-              { name: 'Interior', count: 1 },
-              { name: 'Wood', count: 6 },
-            ].map((category) => (
-              <div key={category.name} className="flex justify-between text-sm lg:text-base">
-                <h3>{category.name}</h3>
-                <span>{category.count}</span>
-              </div>
-            ))}
+          <div>
+            <h3 className="text-xl font-semibold mb-4 font-serif">
+              Categories
+            </h3>
+            <ul className="space-y-3 text-gray-700 text-sm">
+              {["Style", "Fashion", "Design", "Lifestyle", "Trends"].map(
+                (cat) => (
+                  <li
+                    key={cat}
+                    className="flex justify-between hover:text-[#B88E2F] cursor-pointer"
+                  >
+                    <span>{cat}</span>
+                    <span>→</span>
+                  </li>
+                )
+              )}
+            </ul>
           </div>
 
           {/* Recent Posts */}
-          <h1 className="text-[24px] font-semibold mb-8">Recent Posts</h1>
-          <div className="space-y-6">
-            {blogPosts.slice(0, 5).map((post, index) => (
-              <div key={index} className="flex items-center space-x-4">
-                <Image
-                  src={post.src}
-                  alt={`Image of ${post.title}`}
-                  width={80}
-                  height={80}
-                  className="rounded-lg"
-                />
-                <div className="flex flex-col">
-                  <h2 className="font-semibold text-[14px] w-[200px]">{post.title}</h2>
-                  <span className="text-[#333333]">{post.date}</span>
+          <div>
+            <h3 className="text-xl font-semibold mb-4 font-serif">
+              Recent Posts
+            </h3>
+            <div className="space-y-5">
+              {blogPosts.slice(0, 4).map((post, i) => (
+                <div key={i} className="flex items-center gap-4">
+                  <Image
+                    src={post.src}
+                    alt={post.title}
+                    width={70}
+                    height={70}
+                    className="rounded-lg object-cover"
+                  />
+                  <div>
+                    <h4 className="font-medium text-sm hover:text-[#B88E2F] cursor-pointer">
+                      {post.title}
+                    </h4>
+                    <p className="text-xs text-gray-500">{post.date}</p>
+                  </div>
                 </div>
-              </div>
-            ))}
+              ))}
+            </div>
           </div>
         </div>
       </div>
@@ -217,21 +203,27 @@ const BlogPage: React.FC = () => {
   );
 };
 
-const Pagination: React.FC<PaginationProps> = ({ currentPage, totalPages, onPageChange }) => {
+// ✨ Pagination Component
+const Pagination: React.FC<PaginationProps> = ({
+  currentPage,
+  totalPages,
+  onPageChange,
+}) => {
   const pages = Array.from({ length: totalPages }, (_, i) => i + 1);
-
   return (
-    <div className="flex items-center justify-center gap-2 lg:gap-8 mt-10 lg:mt-14">
+    <div className="flex items-center justify-center gap-4 mb-16">
       {pages.map((page) => (
-        <div
+        <button
           key={page}
-          className={`w-[40px] lg:w-[60px] h-[40px] lg:h-[60px] flex items-center justify-center cursor-pointer ${
-            page === currentPage ? 'bg-[#B88E2F] text-white' : 'bg-[#F9F1E7]'
-          }`}
           onClick={() => onPageChange(page)}
+          className={`w-10 h-10 flex items-center justify-center rounded-full border transition ${
+            currentPage === page
+              ? "bg-[#B88E2F] text-white"
+              : "border-gray-300 text-gray-600 hover:bg-[#B88E2F]/10"
+          }`}
         >
           {page}
-        </div>
+        </button>
       ))}
     </div>
   );
